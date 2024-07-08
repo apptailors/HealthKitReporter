@@ -1,8 +1,21 @@
-## [1.7.1] - 27.06.2022.
+## [3.0.0] - 12.03.2023.
+
+* Check for Health data availability
+* CHanged the way of creating HKR instance
+
+## [2.0.0] - 29.10.2022.
+
+* Revamp metadata
+
+## [1.7.0] - 29.10.2022.
+
+* Add new iOS 16 types (also missing iOS 15 types)
+
+## [1.7.1] internal - 27.06.2022.
 
 * Add raw keys for electrocardiogram classification and symptom status
 
-## [1.7.0] - 23.06.2022.
+## [1.7.0] internal - 23.06.2022.
 
 * Make `averageHeartRate` optional as a `HKElectrocardiogram.Classification.inconclusivePoorReading` may not have a value for this field
 

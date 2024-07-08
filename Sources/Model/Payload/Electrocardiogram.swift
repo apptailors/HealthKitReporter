@@ -20,7 +20,7 @@ public struct Electrocardiogram: Identifiable, Sample {
         public let symptomsStatusKey: String
         public let count: Int
         public let voltageMeasurements: [VoltageMeasurement]
-        public let metadata: [String: String]?
+        public let metadata: Metadata?
 
         init(
             averageHeartRate: Double?,
@@ -33,7 +33,7 @@ public struct Electrocardiogram: Identifiable, Sample {
             symptomsStatusKey: String,
             count: Int,
             voltageMeasurements: [VoltageMeasurement],
-            metadata: [String: String]?
+            metadata: Metadata?
         ) {
             self.averageHeartRate = averageHeartRate
             self.averageHeartRateUnit = averageHeartRateUnit
@@ -118,7 +118,6 @@ public struct Electrocardiogram: Identifiable, Sample {
 extension Electrocardiogram.Harmonized: Payload {
     public static func make(from dictionary: [String: Any]) throws -> Electrocardiogram.Harmonized {
         guard
-            let averageHeartRate = dictionary["averageHeartRate"] as? NSNumber,
             let averageHeartRateUnit = dictionary["averageHeartRateUnit"] as? String,
             let samplingFrequency = dictionary["samplingFrequency"] as? NSNumber,
             let samplingFrequencyUnit = dictionary["samplingFrequencyUnit"] as? String,
@@ -130,10 +129,13 @@ extension Electrocardiogram.Harmonized: Payload {
         else {
             throw HealthKitError.invalidValue("Invalid dictionary: \(dictionary)")
         }
+        let averageHeartRate = dictionary["averageHeartRate"] as? NSNumber
         let voltageMeasurements = dictionary["voltageMeasurements"] as? [Any]
-        let metadata = dictionary["metadata"] as? [String: String]
+        let metadata = dictionary["metadata"] as? [String: Any]
         return Electrocardiogram.Harmonized(
-            averageHeartRate: Double(truncating: averageHeartRate),
+            averageHeartRate: averageHeartRate != nil
+                ? Double(truncating: averageHeartRate!)
+                : nil,
             averageHeartRateUnit: averageHeartRateUnit,
             samplingFrequency: Double(truncating: samplingFrequency),
             samplingFrequencyUnit: samplingFrequencyUnit,
@@ -145,7 +147,7 @@ extension Electrocardiogram.Harmonized: Payload {
             voltageMeasurements: voltageMeasurements != nil
                 ? try Electrocardiogram.VoltageMeasurement.collect(from: voltageMeasurements!)
                 : [],
-            metadata: metadata
+            metadata: metadata?.asMetadata
         )
     }
 }

@@ -14,7 +14,7 @@ extension HKElectrocardiogram {
     func harmonize(voltageMeasurements: [Electrocardiogram.VoltageMeasurement]) throws -> Harmonized {
         let averageHeartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         let averageHeartRate = averageHeartRate?.doubleValue(for: averageHeartRateUnit)
-        
+
         let samplingFrequencyUnit = HKUnit.hertz()
         guard
             let samplingFrequency = samplingFrequency?.doubleValue(for: samplingFrequencyUnit)
@@ -34,7 +34,7 @@ extension HKElectrocardiogram {
             symptomsStatusKey: symptomsStatus.key,
             count: numberOfVoltageMeasurements,
             voltageMeasurements: voltageMeasurements,
-            metadata: metadata?.compactMapValues { String(describing: $0 )}
+            metadata: metadata?.asMetadata
         )
     }
 }
@@ -81,7 +81,7 @@ extension HKElectrocardiogram.Classification: CustomStringConvertible {
             fatalError()
         }
     }
-    
+
     public var description: String {
         switch self {
         case .notSet:
