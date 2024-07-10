@@ -1,4 +1,4 @@
-## [3.0.0] - 09.07.2024.
+## [3.1.0] - 09.07.2024.
 
 * Merged changes from main repository, including:
   * ### [3.0.0] - 12.03.2023. 
